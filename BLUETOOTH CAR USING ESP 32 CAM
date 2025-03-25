@@ -1,0 +1,143 @@
+#include "BluetoothSerial.h"
+
+// Define motor control pins
+#define IN1 12
+#define IN2 13
+#define IN3 15
+#define IN4 14
+#define ENA 2
+#define ENB 4
+
+// Create BluetoothSerial object
+BluetoothSerial SerialBT;
+
+void setup() {
+  // Initialize motor control pins as output
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+
+  // Start Bluetooth
+  SerialBT.begin("Alpha car"); // Name of your Bluetooth device
+  Serial.begin(115200);
+  Serial.println("Bluetooth device is ready to pair");
+}
+
+void loop() {
+  // Check if data is available from Bluetooth
+  if (SerialBT.available()) {
+    char command = SerialBT.read();
+    Serial.println(command); // Print the command to Serial Monitor
+
+    // Control the car based on the received command
+    switch (command) {
+      case 'F': // Move Forward
+        moveForward();
+        break;
+      case 'B': // Move Backward
+        moveBackward();
+        break;
+      case 'L': // Turn Left
+        turnLeft();
+        break;
+      case 'R': // Turn Right
+        turnRight();
+        break;
+      case 'S': // Stop
+        stopCar();
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+// Function to move the car forward
+void moveBackward() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+void moveForward() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+void turnRight() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+void turnLeft() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+// Function to stop the car
+void stopCar() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}
+
+// Function to move the car backward
+/*void turnRight() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+// Function to turn the car left
+void moveBackward() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+// Function to turn the car right
+void moveForward() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200); // Adjust speed
+  analogWrite(ENB, 200); // Adjust speed
+}
+
+// Function to stop the car
+void stopCar() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}*/
